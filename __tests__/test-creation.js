@@ -6,7 +6,7 @@ const helpers = require('yeoman-test');
 describe('license:app - generate Apache 2.0 license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -33,7 +33,7 @@ describe('license:app - generate Apache 2.0 license', () => {
 describe('license:app - generate Apache 2.0 license with 2013-2015 year', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -60,7 +60,7 @@ describe('license:app - generate Apache 2.0 license with 2013-2015 year', () => 
 describe('license:app - generate BSD 2 license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -87,7 +87,7 @@ describe('license:app - generate BSD 2 license', () => {
 describe('license:app - generate BSD 3 license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -114,7 +114,7 @@ describe('license:app - generate BSD 3 license', () => {
 describe('license:app - generate ISC license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -141,7 +141,7 @@ describe('license:app - generate ISC license', () => {
 describe('license:app - generate GNU AGPL 3.0 license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -168,7 +168,7 @@ describe('license:app - generate GNU AGPL 3.0 license', () => {
 describe('license:app - generate MIT license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -195,7 +195,7 @@ describe('license:app - generate MIT license', () => {
 describe('license:app - generate MPL 2.0 license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -222,7 +222,7 @@ describe('license:app - generate MPL 2.0 license', () => {
 describe('license:app - generate copyrighted license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -249,7 +249,7 @@ describe('license:app - generate copyrighted license', () => {
 describe('license:app - generate Unlicense license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -275,7 +275,7 @@ describe('license:app - generate Unlicense license', () => {
 describe('license:app - generate GPL-3.0 license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -302,7 +302,7 @@ describe('license:app - generate GPL-3.0 license', () => {
 describe('license:app - generate LGPL-3.0 license', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -333,7 +333,7 @@ describe('license:app - generate LGPL-3.0 license', () => {
 describe('license:app - generate GPL-3.0 license via option', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -360,7 +360,7 @@ describe('license:app - generate GPL-3.0 license via option', () => {
 describe('license:app - generate GPL-3.0 license invalid option', () => {
   beforeEach(() => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');

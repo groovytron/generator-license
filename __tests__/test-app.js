@@ -6,7 +6,7 @@ const helpers = require('yeoman-test');
 describe('license:app', () => {
   it('does not create new package.json', () => {
     return helpers
-      .run(require.resolve('../app'))
+      .run(require.resolve('../src/app'))
       .withPrompts({
         name: 'Rick',
         email: 'foo@example.com',
@@ -21,7 +21,7 @@ describe('license:app', () => {
 
   it('edit pre-existing package.json', () => {
     return helpers
-      .run(require.resolve('../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir(function (dir) {
         const done = this.async();
         const fs = require('fs');
@@ -41,7 +41,7 @@ describe('license:app', () => {
 
   it('with author options: --name --email --website', () => {
     return helpers
-      .run(require.resolve('../app'))
+      .run(require.resolve('../src/app'))
       .withPrompts({
         license: 'ISC'
       })
@@ -59,7 +59,7 @@ describe('license:app', () => {
 
   it('makes npm module private when license selected is UNLICENSED', () => {
     return helpers
-      .run(require.resolve('../app'))
+      .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
         const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
@@ -79,7 +79,7 @@ describe('license:app', () => {
 
   it('--output change the destination directory', () => {
     return helpers
-      .run(path.join(__dirname, '../app'))
+      .run(require.resolve('../src/app'))
       .withOptions({
         output: 'src/license.txt'
       })
