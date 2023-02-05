@@ -1,11 +1,13 @@
-'use strict';
-const path = require('path');
-const assert = require('yeoman-assert');
-const helpers = require('yeoman-test');
+import path from 'node:path';
+import fs from 'node:fs';
+import { createHelpers } from 'yeoman-test';
 
 describe('license:app', () => {
-  it('does not create new package.json', () => {
-    return helpers
+  let runResult: any;
+  const helpers = createHelpers({});
+
+  it('does not create new package.json', async () => {
+    runResult = await helpers
       .run(require.resolve('../src/app'))
       .withPrompts({
         name: 'Rick',
@@ -14,18 +16,16 @@ describe('license:app', () => {
         license: 'MIT'
       })
       .then(() => {
-        assert.file('LICENSE');
-        assert.noFile('package.json');
+        runResult.assertFile('LICENSE');
+        runResult.assertNoFile('package.json');
       });
   });
 
-  it('edit pre-existing package.json', () => {
-    return helpers
+  it('edit pre-existing package.json', async () => {
+    runResult = await helpers
       .run(require.resolve('../src/app'))
-      .inTmpDir(function (dir) {
-        const done = this.async();
-        const fs = require('fs');
-        fs.writeFile(path.join(dir, 'package.json'), '{}', done);
+      .inTmpDir((dir) => {
+        fs.writeFileSync(path.join(dir, 'package.json'), '{}');
       })
       .withPrompts({
         name: 'Rick',
@@ -34,13 +34,13 @@ describe('license:app', () => {
         license: 'MIT'
       })
       .then(() => {
-        assert.file('LICENSE');
-        assert.fileContent('package.json', '"license": "MIT"');
+        runResult.assertFile('LICENSE');
+        runResult.assertFileContent('package.json', '"license": "MIT"');
       });
   });
 
-  it('with author options: --name --email --website', () => {
-    return helpers
+  it('with author options: --name --email --website', async () => {
+    runResult = await helpers
       .run(require.resolve('../src/app'))
       .withPrompts({
         license: 'ISC'
@@ -51,17 +51,16 @@ describe('license:app', () => {
         website: 'http://example.com'
       })
       .then(() => {
-        assert.fileContent('LICENSE', 'ISC');
-        assert.fileContent('LICENSE', 'Rick <foo@example.com> (http://example.com)');
-        assert.noFile('package.json');
+        runResult.assertFileContent('LICENSE', 'ISC');
+        runResult.assertFileContent('LICENSE', 'Rick <foo@example.com> (http://example.com)');
+        runResult.assertNoFile('package.json');
       });
   });
 
-  it('makes npm module private when license selected is UNLICENSED', () => {
-    return helpers
+  it('makes npm module private when license selected is UNLICENSED', async () => {
+    runResult = await helpers
       .run(require.resolve('../src/app'))
       .inTmpDir((dir) => {
-        const fs = require('fs');
         fs.writeFileSync(path.join(dir, 'package.json'), '{}');
       })
       .withPrompts({
@@ -72,13 +71,13 @@ describe('license:app', () => {
         license: 'UNLICENSED'
       })
       .then(() => {
-        assert.fileContent('package.json', '"license": "UNLICENSED"');
-        assert.fileContent('package.json', '"private": true');
+        runResult.assertFileContent('package.json', '"license": "UNLICENSED"');
+        runResult.assertFileContent('package.json', '"private": true');
       });
   });
 
-  it('--output change the destination directory', () => {
-    return helpers
+  it('--output change the destination directory', async () => {
+    runResult = await helpers
       .run(require.resolve('../src/app'))
       .withOptions({
         output: 'src/license.txt'
@@ -91,8 +90,8 @@ describe('license:app', () => {
         license: 'GPL-3.0'
       })
       .then(() => {
-        assert.file('src/license.txt');
-        assert.noFile('LICENSE');
+        runResult.assertFile('src/license.txt');
+        runResult.assertNoFile('LICENSE');
       });
   });
 });

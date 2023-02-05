@@ -1,7 +1,6 @@
-'use strict';
-const Generator = require('yeoman-generator');
+import Generator from 'yeoman-generator';
 
-const licenses = [
+export const licenses = [
   { name: 'Apache 2.0', value: 'Apache-2.0' },
   { name: 'MIT', value: 'MIT' },
   { name: 'Mozilla Public License 2.0', value: 'MPL-2.0' },
@@ -15,66 +14,77 @@ const licenses = [
   { name: 'No License (Copyrighted)', value: 'UNLICENSED' }
 ];
 
-module.exports = class GeneratorLicense extends Generator {
-  constructor(args, opts) {
+interface GitConfig {
+  user: {
+    name: string,
+    email: string
+  }
+}
+
+export default class GeneratorLicense extends Generator {
+  gitc: GitConfig = {
+    user: {
+      name: 'nobody',
+      email: 'nomail',
+    }
+  };
+
+
+  name = '';
+  email = '';
+  website = '';
+  license = '';
+
+  constructor(args: any, opts: any) {
     super(args, opts);
 
     this.option('name', {
       type: String,
-      desc: 'Name of the license owner',
-      required: false
+      description: 'Name of the license owner',
     });
 
     this.option('email', {
       type: String,
-      desc: 'Email of the license owner',
-      required: false
+      description: 'Email of the license owner',
     });
 
     this.option('website', {
       type: String,
-      desc: 'Website of the license owner',
-      required: false
+      description: 'Website of the license owner',
     });
 
     this.option('year', {
       type: String,
-      desc: 'Year(s) to include on the license',
-      required: false,
-      defaults: new Date().getFullYear()
+      description: 'Year(s) to include on the license',
+      default: new Date().getFullYear()
     });
 
     this.option('licensePrompt', {
       type: String,
-      desc: 'License prompt text',
-      defaults: 'Which license do you want to use?',
+      description: 'License prompt text',
+      default: 'Which license do you want to use?',
       hide: true,
-      required: false
     });
 
     this.option('defaultLicense', {
       type: String,
-      desc: 'Default license',
-      required: false
+      description: 'Default license',
     });
 
     this.option('license', {
       type: String,
-      desc: 'Select a license, so no license prompt will happen, in case you want to handle it outside of this generator',
-      required: false
+      description: 'Select a license, so no license prompt will happen, in case you want to handle it outside of this generator',
     });
 
     this.option('output', {
       type: String,
-      desc: 'Set the output file for the generated license',
-      required: false,
-      defaults: 'LICENSE'
+      description: 'Set the output file for the generated license',
+      default: 'LICENSE'
     });
 
     this.option('publish', {
       type: Boolean,
-      desc: 'Publish the package',
-      required: false
+      description: 'Publish the package',
     });
   }
 
@@ -87,7 +97,7 @@ module.exports = class GeneratorLicense extends Generator {
     };
   }
 
-  prompting() {
+  async prompting() {
     const prompts = [
       {
         name: 'name',
@@ -119,27 +129,24 @@ module.exports = class GeneratorLicense extends Generator {
       }
     ];
 
-    return this.prompt(prompts).then((props) => {
-      this.props = {
-        name: this.options.name,
-        email: this.options.email,
-        website: this.options.website,
-        license: this.options.license,
-        ...props
-      };
+    return this.prompt(prompts).then((answers) => {
+      this.name = answers.name;
+      this.email = answers.email;
+      this.website = answers.website;
+      this.license = answers.license;
     });
   }
 
   writing() {
     // License file
-    const filename = this.props.license + '.txt';
-    let author = this.props.name.trim();
-    if (this.props.email) {
-      author += ' <' + this.props.email.trim() + '>';
+    const filename = this.license + '.txt';
+    let author = this.name.trim();
+    if (this.email) {
+      author += ' <' + this.email.trim() + '>';
     }
 
-    if (this.props.website) {
-      author += ' (' + this.props.website.trim() + ')';
+    if (this.website) {
+      author += ' (' + this.website.trim() + ')';
     }
 
     this.fs.copyTpl(
@@ -156,11 +163,11 @@ module.exports = class GeneratorLicense extends Generator {
       return;
     }
 
-    const pkg = this.fs.readJSON(this.destinationPath('package.json'), {});
-    pkg.license = this.props.license;
+    const pkg = this.fs.readJSON(this.destinationPath('package.json'), {}) as any;
+    pkg.license = this.license;
 
     if (
-      (this.options.publish === undefined && this.props.license === 'UNLICENSED') ||
+      (this.options.publish === undefined && this.license === 'UNLICENSED') ||
       this.options.publish === false
     ) {
       pkg.private = true;
@@ -169,5 +176,3 @@ module.exports = class GeneratorLicense extends Generator {
     this.fs.writeJSON(this.destinationPath('package.json'), pkg);
   }
 };
-
-module.exports.licenses = licenses;
